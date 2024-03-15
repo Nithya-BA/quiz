@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Application</title>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #quiz-container {
+            margin-top: 20px;
+        }
+        .question {
+            font-weight: bold;
+        }
+        .options {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quiz Application</h1>
+    <div id="quiz-container">
+        <div id="question"></div>
+        <div id="options"></div>
+        <button onclick="nextQuestion()">Next Question</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        var questions = [
+            {
+                question: "What is the capital of France?",
+                options: ["Paris", "London", "Berlin", "Rome"],
+                answer: "Paris"
+            },
+            {
+                question: "Who wrote 'Romeo and Juliet'?",
+                options: ["William Shakespeare", "Charles Dickens", "Jane Austen", "Leo Tolstoy"],
+                answer: "William Shakespeare"
+            },
+            {
+                question: "What is the chemical symbol for water?",
+                options: ["H2O", "CO2", "O2", "N2"],
+                answer: "H2O"
+            }
+        ];
+
+        var currentQuestion = 0;
+        var score = 0;
+
+        function displayQuestion() {
+            var questionElement = document.getElementById("question");
+            var optionsElement = document.getElementById("options");
+            var current = questions[currentQuestion];
+
+            questionElement.textContent = current.question;
+            optionsElement.innerHTML = "";
+
+            current.options.forEach(function(option, index) {
+                var optionElement = document.createElement("button");
+                optionElement.textContent = option;
+                optionElement.onclick = function() {
+                    checkAnswer(option);
+                };
+                optionsElement.appendChild(optionElement);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            var current = questions[currentQuestion];
+            if (selectedOption === current.answer) {
+                score++;
+                document.getElementById("result").textContent = "Correct!";
+            } else {
+                document.getElementById("result").textContent = "Incorrect!";
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                displayQuestion();
+                document.getElementById("result").textContent = "";
+            } else {
+                endQuiz();
+            }
+        }
+
+        function endQuiz() {
+            var quizContainer = document.getElementById("quiz-container");
+            quizContainer.innerHTML = "<h2>Quiz Complete!</h2><p>Your Score: " + score + "/" + questions.length + "</p>";
+        }
+
+        displayQuestion();
+    </script>
+</body>
+</html>
